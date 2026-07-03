@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "TDD is great",
-  "author": "Kent Beck",
-  "url": "https://kentbeck.com",
-  "likes": 10
+  "title": "Understanding the Node.js Event Loop",
+  "author": "Ryan Dahl",
+  "url": "https://nodejs.org/en/blog/event-loop",
+  "likes": 42
 }
