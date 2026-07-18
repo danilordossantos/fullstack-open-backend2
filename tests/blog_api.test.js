@@ -46,8 +46,24 @@ test('a new blog can be added', async () => {
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
-        const blogsAtEnd = await helper.blogsInDb()
-        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+})
+
+test('if likes property is missing it defaults to 0', async () => {
+    const newBlog = {
+        title: "JavaScript: The Good Parts",
+        author: "Douglas Crockford",
+        url: "https://www.oreilly.com/library/view/javascript-the-good/9780596517748/"
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    expect(response.body.likes).toBe(0)
 })
 
 afterAll(async () => {
