@@ -1,10 +1,12 @@
 const listHelper = require('../utils/list_helper')
+const { test, describe } = require('node:test')
+const assert = require('node:assert')
 
 describe('dummy', () => {
     test('dummy returns one', () => {
         const blogs = []
         const result = listHelper.dummy(blogs)
-        expect(result).toBe(1)
+        assert.strictEqual(result, 1)
     })
 })
 
@@ -12,7 +14,7 @@ describe('total likes', () => {
     test('of empty list is zero', () => {
         const blogs = []
         const result = listHelper.totalLikes(blogs)
-        expect(result).toBe(0)
+        assert.strictEqual(result, 0)
     })
 
     test('when list has only one blog equals the likes of that', () => {
@@ -27,7 +29,7 @@ describe('total likes', () => {
             }
         ]
         const result = listHelper.totalLikes(listWithOneBlog)
-        expect(result).toBe(5)
+        assert.strictEqual(result, 5)
     })
 
     test('of a bigger list is calculated right', () => {
@@ -82,7 +84,7 @@ describe('total likes', () => {
             }
         ]
         const result = listHelper.totalLikes(blogs)
-        expect(result).toBe(36)
+        assert.strictEqual(result, 36)
     })
 })
 
@@ -90,7 +92,7 @@ describe('favorite blog', () => {
     test('of empty list is zero', () => {
         const blogs = []
         const result = listHelper.favoriteBlog(blogs)
-        expect(result).toEqual(0)
+        assert.deepStrictEqual(result, 0)
     })
 
     test('when list has only one blog equals the likes of that', () => {
@@ -102,7 +104,7 @@ describe('favorite blog', () => {
             }
         ]
         const result = listHelper.favoriteBlog(blogs)
-        expect(result).toEqual({
+        assert.deepStrictEqual(result, {
             title: "Canonical string reduction",
             author: "Edsger W. Dijkstra",
             likes: 12
@@ -161,7 +163,7 @@ describe('favorite blog', () => {
             }
         ]
         const result = listHelper.favoriteBlog(blogs)
-        expect(result).toEqual({
+        assert.deepStrictEqual(result, {
             _id: "5a422b3a1b54a676234d17f9",
             title: "Canonical string reduction",
             author: "Edsger W. Dijkstra",
@@ -176,7 +178,7 @@ describe('most blogs', () => {
     test('of empty list is zero', () => {
         const blogs = []
         const result = listHelper.mostBlogs(blogs)
-        expect(result).toEqual(0)
+        assert.deepStrictEqual(result, 0)
     })
 
     test('when list has only one blog equals the likes of that', () => {
@@ -191,7 +193,7 @@ describe('most blogs', () => {
             }
         ]
         const result = listHelper.mostBlogs(blogs)
-        expect(result).toEqual({
+        assert.deepStrictEqual(result, {
             author: "Edsger W. Dijkstra",
             blogs: 1
         })
@@ -249,7 +251,7 @@ describe('most blogs', () => {
             }
         ]
         const result = listHelper.mostBlogs(blogs)
-        expect(result).toEqual({
+        assert.deepStrictEqual(result, {
             author: "Robert C. Martin",
             blogs: 3
         })
@@ -260,7 +262,7 @@ describe('most likes', () => {
     test('of empty list is zero', () => {
         const blogs = []
         const result = listHelper.mostLikes(blogs)
-        expect(result).toEqual(0)
+        assert.deepStrictEqual(result, 0)
     })
 
     test('when list has only one blog equals the likes of that', () => {
@@ -275,7 +277,7 @@ describe('most likes', () => {
             }
         ]
         const result = listHelper.mostLikes(blogs)
-        expect(result).toEqual({
+        assert.deepStrictEqual(result, {
             author: "Edsger W. Dijkstra",
             likes: 5
         })
@@ -333,7 +335,7 @@ describe('most likes', () => {
             }
         ]
         const result = listHelper.mostLikes(blogs)
-        expect(result).toEqual({
+        assert.deepStrictEqual(result, {
             author: "Edsger W. Dijkstra",
             likes: 17
         })

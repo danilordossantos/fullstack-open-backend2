@@ -4,6 +4,8 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
+const { test, describe, before, after, beforeEach } = require('node:test')
+const assert = require('node:assert')
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -15,8 +17,8 @@ beforeEach(async () => {
 describe('blogs get', () => {
     test('all blogs are returned', async () => {
         const response = await api.get('/api/blogs')
-
-        expect(response.body).toHaveLength(helper.initialBlogs.length)
+        
+        assert.strictEqual(response.body.length, helper.initialBlogs.length)
     })
 
     test('blogs are returned as json', async () => {
@@ -31,7 +33,7 @@ describe('blogs id', () => {
     test('unique identifier is named id', async () => {
         const response = await api.get('/api/blogs')
         const firstBlog = response.body[0]
-        expect(firstBlog.id).toBeDefined()
+        assert.notStrictEqual(firstBlog.id, undefined)
     })
 })
 
@@ -51,7 +53,8 @@ describe('blogs post', () => {
             .expect('Content-Type', /application\/json/)
 
         const blogsAtEnd = await helper.blogsInDb()
-        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+        assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
     })
 
     test('if likes property is missing it defaults to 0', async () => {
@@ -67,7 +70,7 @@ describe('blogs post', () => {
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
-        expect(response.body.likes).toBe(0)
+        assert.strictEqual(response.body.likes, 0)
     })
 
     test('blog without title is not added', async () => {
@@ -97,6 +100,6 @@ describe('blogs post', () => {
     })
 })
 
-afterAll(async () => {
+after(async () => {
     await mongoose.connection.close()
 })
