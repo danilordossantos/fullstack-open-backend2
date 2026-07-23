@@ -17,7 +17,7 @@ beforeEach(async () => {
 describe('blogs get', () => {
     test('all blogs are returned', async () => {
         const response = await api.get('/api/blogs')
-        
+
         assert.strictEqual(response.body.length, helper.initialBlogs.length)
     })
 
@@ -97,6 +97,24 @@ describe('blogs post', () => {
             .post('/api/blogs')
             .send(blogWithoutUrl)
             .expect(400)
+    })
+})
+
+describe('blog delete', () => {
+    test('a blog can be deleted', async () => {
+        const blogAtStart = await helper.blogsInDb()
+        const blogToDelete = blogAtStart[0]
+
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .expect(204)
+
+        const blogAtEnd = await helper.blogsInDb()
+
+        const ids = blogAtEnd.map(n => n.id)
+        assert(!ids.includes(blogToDelete.id))
+
+        assert.strictEqual(blogAtEnd.length, helper.initialBlogs.length - 1)
     })
 })
 
