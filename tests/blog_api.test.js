@@ -118,6 +118,26 @@ describe('blog delete', () => {
     })
 })
 
+describe('blog update', () => {
+    test('a blog can be updated', async () => {
+        const blogAtStart = await helper.blogsInDb()
+        const blogToUpdate = blogAtStart[0]
+        const blogUpdated = {
+            title: "Clean Code",
+            author: "Robert C. Martin",
+            url: "https://www.cleancodersblog.com",
+            likes: 25
+        }
+
+        const response = await api
+            .put(`/api/blogs/${blogToUpdate.id}`)
+            .send(blogUpdated)
+            .expect(200).expect('Content-Type', /application\/json/)
+
+        assert.strictEqual(response.body.likes, 25)
+    })
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
