@@ -8,5 +8,16 @@ Content-Type: application/json
   "likes": 42
 }
 
+### 
 
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Clean Architecture",
+    "author": "Robert C. Martin",
+    "url": "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html",
+    "likes": 8,
+    "userId": "6a6ac09cd98eface3eb2201b"
+}
 
