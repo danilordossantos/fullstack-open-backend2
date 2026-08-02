@@ -24,9 +24,12 @@ beforeEach(async () => {
 
     token = loginResponse.body.token
 
-    let blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
-    const promiseArray = blogObjects.map(blog => blog.save())
-    await Promise.all(promiseArray)
+    for (const blog of helper.initialBlogs) {
+        await api
+            .post('/api/blogs')
+            .send(blog)
+            .set('Authorization', `Bearer ${token}`)
+    }
 })
 
 describe('blogs get', () => {
@@ -140,6 +143,7 @@ describe('blog delete', () => {
 
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
+            .set('Authorization', `Bearer ${token}`)
             .expect(204)
 
         const blogAtEnd = await helper.blogsInDb()
