@@ -178,6 +178,7 @@ describe('blog update', () => {
         const response = await api
             .put(`/api/blogs/${blogToUpdate.id}`)
             .send(blogUpdated)
+            .set('Authorization', `Bearer ${token}`)
             .expect(200).expect('Content-Type', /application\/json/)
 
         assert.strictEqual(response.body.likes, 25)
