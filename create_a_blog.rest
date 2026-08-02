@@ -21,3 +21,27 @@ Content-Type: application/json
     "userId": "6a6ac09cd98eface3eb2201b"
 }
 
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFicmFuY2hlcyIsImlkIjoiNmE2YWMwOWNkOThlZmFjZTNlYjIyMDFiIiwiaWF0IjoxNzg1NjMxNTcxfQ.O2ZSV5JGeJCuNtwz5p4OgX7qJNeLjMMyMhGZD6kjYG0
+
+{
+    "title": "Clean Architecture",
+    "author": "Robert C. Martin",
+    "url": "https://blog.cleancoder.com",
+    "likes": 10
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Sem token",
+    "author": "Teste",
+    "url": "https://teste.com",
+    "likes": 0
+}
