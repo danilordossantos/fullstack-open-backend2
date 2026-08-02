@@ -6,9 +6,24 @@ const Blog = require('../models/blog')
 const helper = require('./test_helper')
 const { test, describe, before, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
+
+let token
 
 beforeEach(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+    await user.save()
+
+    const loginResponse = await api
+        .post('/api/login')
+        .send({ username: 'root', password: 'sekret' })
+
+    token = loginResponse.body.token
+
     let blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
@@ -49,6 +64,7 @@ describe('blogs post', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
@@ -67,6 +83,7 @@ describe('blogs post', () => {
         const response = await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
@@ -83,6 +100,7 @@ describe('blogs post', () => {
         await api
             .post('/api/blogs')
             .send(blogWithoutTitle)
+            .set('Authorization', `Bearer ${token}`)
             .expect(400)
     })
 
@@ -96,7 +114,22 @@ describe('blogs post', () => {
         await api
             .post('/api/blogs')
             .send(blogWithoutUrl)
+            .set('Authorization', `Bearer ${token}`)
             .expect(400)
+    })
+
+    test('adding a blog fails with status 401 if no token is provided', async () => {
+        const newBlog = {
+            title: "No Token Blog",
+            author: "Test Author",
+            url: "https://test.com",
+            likes: 0
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(401)
     })
 })
 
