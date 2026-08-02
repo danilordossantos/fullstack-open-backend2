@@ -153,6 +153,15 @@ describe('blog delete', () => {
 
         assert.strictEqual(blogAtEnd.length, helper.initialBlogs.length - 1)
     })
+
+    test('deleting a blog fails with status 401 if no token is provided', async () => {
+        const blogAtStart = await helper.blogsInDb()
+        const blogToDelete = blogAtStart[0]
+
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .expect(401)
+    })
 })
 
 describe('blog update', () => {
