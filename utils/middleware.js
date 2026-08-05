@@ -21,6 +21,13 @@ const userExtractor = async (request, response, next) => {
     next()
 }
 
+const userValidator = (request, response, next) => {
+    if (!request.user) {
+        return response.status(401).json({ error: 'invalid token' })
+    }
+    next()
+}
+
 const errorHandler = ((error, request, response, next) => {
     console.log(error.message)
     if (error.name === 'CastError') {
@@ -38,4 +45,4 @@ const errorHandler = ((error, request, response, next) => {
     }
 })
 
-module.exports = { unknownEndpoint, tokenExtractor, userExtractor, errorHandler }
+module.exports = { unknownEndpoint, tokenExtractor, userExtractor, userValidator, errorHandler }
