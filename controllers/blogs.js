@@ -51,7 +51,7 @@ blogsRouter.put('/:id', userValidator, async (request, response) => {
         return response.status(403).end()
     }
 
-    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, request.body, { returnDocument: 'after' })
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, request.body, { returnDocument: 'after' }).populate('user', { username: 1, name: 1 })
     response.status(200).json(updatedBlog)
 })
 
