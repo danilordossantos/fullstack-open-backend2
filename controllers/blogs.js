@@ -26,6 +26,9 @@ blogsRouter.delete('/:id', userValidator, async (request, response) => {
     if (!blog) {
         return response.status(404).end()
     }
+    if (!blog.user) {
+        return response.status(403).end()
+    }
     if (blog.user.toString() === request.user.id) {
         await Blog.findByIdAndDelete(request.params.id)
         response.status(204).end()
@@ -40,6 +43,9 @@ blogsRouter.put('/:id', userValidator, async (request, response) => {
     const blog = await Blog.findById(request.params.id)
     if (!blog) {
         return response.status(404).end()
+    }
+    if (!blog.user) {
+        return response.status(403).end()
     }
     if (blog.user.toString() !== request.user.id) {
         return response.status(403).end()
