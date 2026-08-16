@@ -46,12 +46,3 @@ Content-Type: application/json
     "likes": 0
 }
 
-###
-
-POST http://localhost:3003/api/login
-Content-Type: application/json
-
-{
-    "username": "abranches",
-    "password": "senha123"
-}
