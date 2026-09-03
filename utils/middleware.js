@@ -21,6 +21,13 @@ const userExtractor = async (request, response, next) => {
     next()
 }
 
+const userValidator = (request, response, next) => {
+    if (!request.user) {
+        return response.status(401).json({ error: 'invalid token' })
+    }
+    next()
+}
+
 const errorHandler = ((error, request, response, next) => {
     console.log(error.message)
     if (error.name === 'CastError') {
@@ -31,9 +38,11 @@ const errorHandler = ((error, request, response, next) => {
         return response.status(400).send({ error: 'expected `username` to be unique' })
     } else if (error.name === 'JsonWebTokenError') {
         return response.status(401).json({ error: 'invalid token' })
+    } else if (error.name === 'TokenExpiredError') {
+        return response.status(401).json({ error: 'token expired' })
     } else {
         next(error)
     }
 })
 
-module.exports = { unknownEndpoint, tokenExtractor, userExtractor, errorHandler }
+module.exports = { unknownEndpoint, tokenExtractor, userExtractor, userValidator, errorHandler }
